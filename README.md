@@ -58,7 +58,7 @@ weighted avg 0.91 0.90 0.90 100
 ---
 
 ## 🛠️ Installation
-
+```bash
 git clone https://github.com/your-username/sentiview.git
 cd sentiview
 pip install -r requirements.txt
@@ -67,6 +67,7 @@ Add your YouTube API Key in config.py:
 API_KEY = "YOUR_YOUTUBE_API_KEY"
 
 ## ▶️ Run the App
+```bash
 streamlit run app.py
 
 ## 📁 Project Structure
