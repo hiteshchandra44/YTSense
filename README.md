@@ -21,24 +21,9 @@ Tested on the `YoutubeCommentsDataSet.csv` (first 100 samples):
 📊 Classification Report:
 precision recall f1-score support
 
-nginx
-Copy
-Edit
-negative       1.00      0.93      0.97        15
- neutral       0.74      0.92      0.82        25
-positive       0.96      0.88      0.92        60
-
-accuracy                           0.90       100
-macro avg 0.90 0.91 0.90 100
-weighted avg 0.91 0.90 0.90 100
-
-✅ Accuracy: 90.00%
-✅ Macro F1 Score: 0.9029
-✅ Weighted F1 Score: 0.9032
-
-yaml
-Copy
-Edit
+- ✅ Accuracy: 90.00%
+- ✅ Macro F1 Score: 0.9029
+- ✅ Weighted F1 Score: 0.9032
 
 ---
 
@@ -46,7 +31,7 @@ Edit
 
 - **Frontend**: Streamlit  
 - **Backend**: Python, HuggingFace Transformers, pandas  
-- **Model**: `cardiffnlp/twitter-roberta-base-sentiment`  
+- **Model**: BERT  
 - **APIs**: YouTube Data API v3  
 - **NLP Tools**: `langdetect`, `transformers`, `nltk`  
 
@@ -88,8 +73,8 @@ streamlit run app.py
 ├── requirements.txt           # All dependencies  
 └── README.md
 ## 📊 Dataset Used
-Name: YoutubeCommentsDataSet.csv
-Size: ~18,000 labeled YouTube comments
-Sentiment Labels: Positive, Neutral, Negative
-Source: Kaggle - YouTube Comments Sentiment
+- Name: YoutubeCommentsDataSet.csv
+- Size: ~18,000 labeled YouTube comments
+- Sentiment Labels: Positive, Neutral, Negative
+- Source: Kaggle - YouTube Comments Sentiment
 
