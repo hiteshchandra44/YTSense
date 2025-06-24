@@ -21,12 +21,14 @@ Tested on the `YoutubeCommentsDataSet.csv` (first 100 samples):
 📊 Classification Report:
 precision recall f1-score support
 
+nginx
+Copy
+Edit
 negative       1.00      0.93      0.97        15
  neutral       0.74      0.92      0.82        25
 positive       0.96      0.88      0.92        60
 
 accuracy                           0.90       100
-
 macro avg 0.90 0.91 0.90 100
 weighted avg 0.91 0.90 0.90 100
 
@@ -34,6 +36,9 @@ weighted avg 0.91 0.90 0.90 100
 ✅ Macro F1 Score: 0.9029
 ✅ Weighted F1 Score: 0.9032
 
+yaml
+Copy
+Edit
 
 ---
 
@@ -58,25 +63,33 @@ weighted avg 0.91 0.90 0.90 100
 ---
 
 ## 🛠️ Installation
+
 ```bash
 git clone https://github.com/your-username/sentiview.git
 cd sentiview
 pip install -r requirements.txt
-
-Add your YouTube API Key in config.py:
+```
+Then, add your YouTube API Key in config.py:
+```bash
 API_KEY = "YOUR_YOUTUBE_API_KEY"
-
+```
 ## ▶️ Run the App
 ```bash
 streamlit run app.py
-
+```
 ## 📁 Project Structure
 
-├── app.py                    # Streamlit dashboard interface  
-├── fetch_comments.py         # YouTube comment fetcher  
-├── detect_language.py        # Language detection utility  
-├── utils.py                  # Helper functions incl. BERT pipeline  
-├── evaluate.py               # Model evaluation script  
+├── app.py                      # Streamlit dashboard interface  
+├── fetch_comments.py          # YouTube comment fetcher  
+├── detect_language.py         # Language detection utility  
+├── utils.py                   # Helper functions incl. BERT pipeline  
+├── evaluate.py                # Model evaluation script  
 ├── YoutubeCommentsDataSet.csv  # Sample labeled dataset  
-├── requirements.txt          # All dependencies  
+├── requirements.txt           # All dependencies  
 └── README.md
+## 📊 Dataset Used
+Name: YoutubeCommentsDataSet.csv
+Size: ~18,000 labeled YouTube comments
+Sentiment Labels: Positive, Neutral, Negative
+Source: Kaggle - YouTube Comments Sentiment
+
