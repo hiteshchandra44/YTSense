@@ -1,70 +1,57 @@
 # streamlit_app.py
+import os
+os.environ["STREAMLIT_WATCHER_IGNORE"] = "none"
 
 import streamlit as st
 import pandas as pd
 import matplotlib.pyplot as plt
-from langdetect import detect, DetectorFactory
-from nltk.sentiment.vader import SentimentIntensityAnalyzer
-import nltk
 
-from utils import extract_video_id, get_comments
+from utils import extract_video_id, get_comments, apply_bert_sentiment
 
-DetectorFactory.seed = 0
-nltk.download("vader_lexicon")
-
-# Page layout
+# Streamlit setup
 st.set_page_config(page_title="YouTube Sentiment Analyzer", layout="wide")
-st.title("🎬 YouTube Comment Sentiment Analyzer")
-st.markdown("Enter a YouTube video URL to fetch and analyze viewer sentiment.")
+st.title("🎬 YouTube Comment Sentiment Analyzer (BERT-powered)")
+st.markdown("Paste any YouTube video URL below to see a real-time sentiment breakdown using BERT.")
 
 # Input
-video_url = st.text_input("🔗 Paste YouTube video URL")
+video_url = st.text_input("🔗 YouTube Video URL")
 
-def detect_language(text):
-    try:
-        text = str(text).strip()
-        if len(text) < 5:
-            return "undetected"
-        return detect(text)
-    except:
-        return "undetected"
-
-def analyze_sentiment(df):
-    sia = SentimentIntensityAnalyzer()
-    df['language'] = df['text'].apply(detect_language)
-    df['score'] = df['text'].apply(lambda x: sia.polarity_scores(str(x))['compound'])
-    df['sentiment'] = df['score'].apply(
-        lambda x: 'positive' if x >= 0.05 else 'negative' if x <= -0.05 else 'neutral'
-    )
-    return df
-
+# Main workflow
 if video_url:
     video_id = extract_video_id(video_url)
+
     if video_id:
         try:
-            with st.spinner("Fetching comments..."):
+            with st.spinner("🔍 Fetching comments..."):
                 df = get_comments(video_id)
-                if df.empty:
-                    st.warning("No comments found.")
-                else:
-                    df = analyze_sentiment(df)
 
-                    st.success(f"{len(df)} comments analyzed.")
-                    st.subheader("📋 Sample Comments")
-                    st.dataframe(df[['text', 'language', 'sentiment', 'score']].head(15))
+            if df.empty:
+                st.warning("⚠️ No comments found for this video.")
+            else:
+                st.success(f"✅ {len(df)} comments fetched successfully!")
 
-                    st.subheader("📊 Sentiment Breakdown")
-                    sentiment_counts = df['sentiment'].value_counts()
-                    fig, ax = plt.subplots()
-                    sentiment_counts.plot(kind='bar', color=['green', 'gray', 'red'], ax=ax)
-                    st.pyplot(fig)
+                with st.spinner("💡 Analyzing sentiment with BERT..."):
+                    df = apply_bert_sentiment(df)
 
-                    st.subheader("✅ Most Positive Comments")
-                    st.table(df.sort_values('score', ascending=False).head(5)[['text', 'score']])
+                # Show sample
+                st.subheader("🧪 Sample Comments with Sentiment")
+                st.dataframe(df[['text', 'bert_sentiment']].head(15))
 
-                    st.subheader("❌ Most Negative Comments")
-                    st.table(df.sort_values('score').head(5)[['text', 'score']])
+                # Distribution chart
+                st.subheader("📊 Sentiment Distribution")
+                sentiment_counts = df['bert_sentiment'].value_counts()
+                fig, ax = plt.subplots()
+                sentiment_counts.plot(kind='bar', color=['green', 'gray', 'red'], ax=ax)
+                plt.title("Sentiment Overview")
+                st.pyplot(fig)
+
+                # Top Positive & Negative Comments
+                st.subheader("👍 Most Positive Comments")
+                st.write(df[df['bert_sentiment'] == 'positive'][['text']].head(5))
+
+                st.subheader("👎 Most Negative Comments")
+                st.write(df[df['bert_sentiment'] == 'negative'][['text']].head(5))
         except Exception as e:
-            st.error(str(e))
+            st.error(f"🚫 Error: {str(e)}")
     else:
-        st.error("Invalid YouTube URL.")
+        st.error("❗ Could not extract video ID. Please check the URL format.")

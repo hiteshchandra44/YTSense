@@ -1,11 +1,7 @@
+streamlit
 pandas
+matplotlib
 google-api-python-client
-nltk
-vaderSentiment
-langdetect
 transformers
 torch
-streamlit
-seaborn
-matplotlib
-plotly
+langdetect
